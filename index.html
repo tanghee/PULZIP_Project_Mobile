@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PULZIP MOBILE</title>
+
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.5.0-alpha.1/jquery.mobile-1.5.0-alpha.1.min.js"></script>
+    <!-- <script src="js/index.js"></script> -->
+</head>
+<body>
+    <div class="header">PULZIP</div>
+    <div class="content">
+        <div class="slide_wrap">
+            <div class="slide">
+                <div class="contents">
+                    <a href=""><img src="img/icon01.png"><span>전시소식</span></a>
+                    <a href=""><img src="img/icon02.png"><span>유물사진</span></a>
+                    <a href=""><img src="img/icon03.png"><span>체험학습</span></a>
+                    <a href=""><img src="img/icon04.png"><span>관련기사</span></a>
+                </div>
+                <div class="contents">
+                    <a href=""><img src="img/icon05.png"><span>공지사항</span></a>
+                    <a href=""><img src="img/icon06.png"><span>오시는길</span></a>
+                    <a href=""><img src="img/icon07.png"><span>관련문의</span></a>
+                    <a href=""><img src="img/icon08.png"><span>게시판</span></a>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="contents">
+                    <a href=""><img src="img/icon01.png"><span>전시소식</span></a>
+                    <a href=""><img src="img/icon02.png"><span>유물사진</span></a>
+                    <a href=""><img src="img/icon03.png"><span>체험학습</span></a>
+                </div>
+                <div class="contents">
+                    <a href=""><img src="img/icon05.png"><span>공지사항</span></a>
+                    <a href=""><img src="img/icon06.png"><span>오시는길</span></a>
+                    <a href=""><img src="img/icon07.png"><span>관련문의</span></a>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="contents">
+                    <a href=""><img src="img/icon01.png"><span>전시소식</span></a>
+                    <a href=""><img src="img/icon02.png"><span>유물사진</span></a>
+                </div>
+                <div class="contents">
+                    <a href=""><img src="img/icon05.png"><span>공지사항</span></a>
+                    <a href=""><img src="img/icon06.png"><span>오시는길</span></a>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="contents">
+                    <a href=""><img src="img/icon01.png"><span>전시소식</span></a>
+                </div>
+                <div class="contents">
+                    <a href=""><img src="img/icon05.png"><span>공지사항</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="button"></div>
+    <div class="footer"></div>
+
+    <script>
+        // var, let, const 차이점
+        // 1. var로 선언한 변수는 선언 전에 사용해도 에러나지 않음, let, const는 에러 발생
+        // 2. var는 이미 선언된 이름과 같은 이름으로 변수를 선언해도 에러나지 않지만, 
+        //    let, const는 이미 존재하는 변수와 같은 이름의 변수를 선언하면 에러가 발생
+        // 3. var, let은 변수를 선언하면 초기값을 주지 않아도 되지만, const는 반드시 초기값을 할당해야 함
+        // 4. var, let은 값을 다시 할당할 수 있지만 const는 한번 할당한 값은 변경할 수 없음
+
+        $(window).on("load", function () {
+            let g_nSlideCnt = 0;
+            let g_nSlideIdx = 0;
+            let g_nSlideLotation = 0;
+            let g_nSlideWidth = $('.content .slide_wrap .slide').width();
+
+            let timer = null; 
+
+            $(window).on('resize', function(){
+	            // clearTimeout(timer);
+	            // timer = setTimeout(function(){
+                    g_nSlideWidth = $('.content .slide_wrap .slide').width();
+
+                    // $(".content .slide_wrap").animate({
+                    //     'left': - (g_nSlideWidth * g_nSlideIdx)
+                    // });
+
+                    $(".content .slide_wrap").css('left', - (g_nSlideWidth * g_nSlideIdx))
+	            // }, 50);
+            });
+
+            // each() : 선택자를 넘기면, 해당 선택자를 자바스크립트의 반복문과 같이 사용함.
+            $('.slide').each(function (i) {
+                const dot = $('<span class="dot"></span>');
+
+                // ==와 ===의 차이점
+                // == : value와 value를 비교함, a=10 b=5라면 a==b는 true
+                // === : value와 data type을 비교함, a=10라면 a===10은 true, a==="10"은 false
+                if ( i === 0 ) {
+                    dot.addClass('active');
+                }
+
+                // append() : 선택된 요소의 마지막에 새로운 요소나 콘텐츠를 추가함
+                $('.button').append(dot);
+
+                // g_nSlideCnt 의도를 모르겠음, 지금의 오류를 해결하기 위해 쓰는 변수가 아닐까 예상함
+                // 최종적으로 이 코드에서는 g_nSlideCnt 값은 2가 된다
+                g_nSlideCnt += 1;
+            });
+
+            $(".content .slide_wrap").on("swipeleft", function () {
+                g_nSlideLotation += 1;
+                
+                // animate()에 새로운 함수를 추가한 경우, 모션을 이어서 실행함
+                if (g_nSlideLotation >= g_nSlideCnt) {
+                    $(this).animate({
+                    'left': '0'
+                    }, function () {
+                        g_nSlideLotation = 0;
+                        g_nSlideIdx = 0;
+                        $('.button .dot').removeClass('active').eq(g_nSlideIdx).addClass('active');
+                    }); 
+                } else {
+                    $(this).animate({
+                        'left': '-=' + g_nSlideWidth
+                    }, function () {
+                        g_nSlideIdx += 1;
+
+                        // ,button .dot에서 active class를 지워주고, 해당하는 요소에 다시 active class 추가함
+                        // eq() : 선택한 요소 중에서 전달받은 인덱스에 해당하는 요소를 선택함
+                        $('.button .dot').removeClass('active').eq(g_nSlideIdx).addClass('active');
+                    });
+                }
+            });
+
+            $(".content .slide_wrap").on("swiperight", function () {
+                g_nSlideLotation -= 1;
+
+                if (g_nSlideLotation < 0) {
+                    $(this).animate({
+                    'left': - (g_nSlideWidth * g_nSlideCnt - g_nSlideWidth)
+                    }, function () {
+                        g_nSlideLotation = g_nSlideCnt - 1;
+                        g_nSlideIdx = g_nSlideCnt - 1;
+                        $('.button .dot').removeClass('active').eq(g_nSlideIdx).addClass('active');
+                    }); 
+                } else {
+                    $(this).animate({
+                        'left': '+=' + g_nSlideWidth
+                    }, function () {
+                        g_nSlideIdx -= 1;
+                        $('.button .dot').removeClass('active').eq(g_nSlideIdx).addClass('active');
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
